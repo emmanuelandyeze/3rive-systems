@@ -1,16 +1,20 @@
+"use client";
+
+import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Methodology from "@/components/Methodology";
+import WhyUs from "@/components/WhyUs";
+import Work from "@/components/Work";
 import Services from "@/components/Services";
-import Lab from "@/components/Lab";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-navy-900 selection:bg-teal-400/30">
+    <main className="min-h-screen bg-deep-slate overflow-hidden">
+      <Navbar />
       <Hero />
-      <Methodology />
+      <WhyUs />
+      <Work />
       <Services />
-      <Lab />
       <Footer />
     </main>
   );

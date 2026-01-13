@@ -1,231 +1,167 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, Code2, Database, Globe, ShoppingCart, Terminal, Activity, ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+import BrowserWindow from "@/components/BrowserWindow";
+import { CheckCircle } from "lucide-react";
 
-type Project = {
-  id: string;
-  title: string;
-  category: "Fintech" | "E-Commerce" | "Internal Tools" | "AI Systems";
-  description: string;
-  challenge: string;
-  tech: string[];
-  impact: string;
-  details: {
-    problem: string;
-    architecture: string;
-    codeSnippet?: string;
-  };
-};
-
-const projects: Project[] = [
+const projectCategories = [
   {
-    id: "royalty-engine",
-    title: "Royalty Data Engine",
-    category: "Fintech",
-    description: "Automated ledger for tracking intellectual property rights and distributing royalties.",
-    challenge: "Real-time Data",
-    tech: ["Python", "PostgreSQL", "Supabase"],
-    impact: "Processed 50k transactions/sec with zero latency.",
-    details: {
-      problem: "The client was managing royalty splits manually in spreadsheets, leading to a 3-month backlog and 15% error rate in payouts.",
-      architecture: "We built an event-driven architecture using PostgreSQL triggers and Supabase Edge Functions. A precise ledger system ensures atomic transactions for every stream/sale event.",
-      codeSnippet: `def handle_royalty_event(event):
-    with db.transaction():
-        rate = get_contract_rate(event.user_id)
-        payout = calculate_share(event.amount, rate)
-        ledger.append({
-            "user_id": event.user_id,
-            "amount": payout,
-            "timestamp": now()
-        })
-    return "PROCESSED"`
-    }
+    name: "Fintech & SaaS Platforms",
+    description: "Demonstrating complex logic, financial security, and data handling.",
+    projects: [
+      {
+        title: "Afrosoundtrack (Music Rights Engine)",
+        url: "app.afrosoundtrack.com",
+        challenge: "African artists lose billions in unclaimed royalties due to poor metadata.",
+        solution: "Built a 'Digital Rights Management (DRM)' platform that tracks 1,600+ titles across 71+ global income sources.",
+        tech: ["Automated Metadata Injection", "Royalty Split Algorithms", "Real-time Dashboarding"],
+        imageColor: "bg-orange-500/10",
+        tags: ["DRM", "Fintech", "Next.js"],
+        imageSrc: "/images/afro.png"
+      },
+      {
+        title: "AuditMe",
+        url: "auditme.com.ng",
+        challenge: "Nigerian SMEs struggle to get tax clearance because finding licensed auditors is slow and offline.",
+        solution: "A digital platform connecting businesses directly with ICAN-certified auditors for fast, legally binding financial reports.",
+        tech: ["Secure Document Vaults", "Auditor Matching Algorithm", "Automated Report Generation"],
+        imageColor: "bg-blue-500/10",
+        tags: ["Fintech", "Compliance", "React"],
+        imageSrc: "/images/auditme.png"
+      },
+      {
+        title: "Owa by Pepcode",
+        url: "owabypepcode.com.ng",
+        challenge: "Informal traders (market women) need simple bookkeeping.",
+        solution: "An 'Offline-First' PWA that simplifies daily sales recording without complex accounting jargon.",
+        tech: ["Offline-First (PWA)", "Simplified UX", "Local Storage"],
+        imageColor: "bg-yellow-500/10",
+        tags: ["Retail Tech", "PWA", "Offline-First"],
+        imageSrc: "/images/owa.png"
+      }
+    ]
   },
   {
-    id: "yunimall",
-    title: "Yunimall Marketplace",
-    category: "E-Commerce",
-    description: "Next-gen headless commerce engine for high-volume marketplaces.",
-    challenge: "High Concurrency",
-    tech: ["Next.js", "Node.js", "Stripe Connect"],
-    impact: "Scaled to 1M+ active users during flash sales.",
-    details: {
-      problem: "Existing monolithic platforms crashed during peak traffic events (Black Friday). The vendor onboarding process was also slow and manual.",
-      architecture: "We migrated to a headless Next.js frontend with a Node.js microservices backend. Stripe Connect automates vendor payouts, and Redis caches inventory states."
-    }
+    name: "E-Commerce & Marketplaces",
+    description: "Demonstrating high-volume transactions and logistics logic.",
+    projects: [
+      {
+        title: "Yunimall (Campus Marketplace)",
+        url: "yuni-mall.com",
+        challenge: "Logistics within Nigerian universities is fragmented and expensive.",
+        solution: "A hyper-local marketplace allowing student entrepreneurs to register businesses and coordinate campus-specific deliveries.",
+        tech: ["Multi-Vendor Architecture", "Geo-fenced Logistics", "Student ID Verification"],
+        imageColor: "bg-purple-500/10",
+        tags: ["Marketplace", "Logistics", "React"],
+        imageSrc: "/images/yunimall.png"
+      }
+    ]
   },
   {
-    id: "chrome-ai",
-    title: "Chrome AI Assistant",
-    category: "AI Systems",
-    description: "Browser extension that sums up articles and automates form filling.",
-    challenge: "Context integration",
-    tech: ["JavaScript", "Gemini API", "Chrome Extension API"],
-    impact: "Reduced research time by 40% for internal analysts.",
-    details: {
-      problem: "Analysts were spending hours manually summarizing news feeds and entering data into CRMs.",
-      architecture: "A Chrome Extension injects a sidebar that grabs page content, sends it to the Gemini 1.5 Pro API for summarization, and auto-populates internal dashboard forms."
-    }
+    name: "Corporate & Digital Experience",
+    description: "Demonstrating high-end design and brand authority.",
+    projects: [
+      {
+        title: "Arc9 Consult",
+        url: "arc9consult.com",
+        challenge: "Architecture portfolio requiring heavy visual content without compromising speed.",
+        solution: "High-fidelity image galleries, project filtration systems, and fast-loading assets.",
+        tech: ["Next.js Image Optimization", "Lazy Loading", "CMS Integration"],
+        imageColor: "bg-emerald-500/10",
+        tags: ["Portfolio", "Architecture", "Design"],
+        imageSrc: "/images/arc9.png"
+      },
+      {
+        title: "Alpha Analytica",
+        url: "aals.com.ng",
+        challenge: "Establishing trust for a data and analytics consultancy.",
+        solution: "Professional digital presence with clean corporate UI and lead generation funnels.",
+        tech: ["Lead Gen Funnels", "Service Maps", "Corporate UI"],
+        imageColor: "bg-cyan-500/10",
+        tags: ["Corporate", "Analytics", "Marketing"],
+        imageSrc: "/images/aals.png"
+      }
+    ]
   }
 ];
 
-const categories = ["All", "Fintech", "E-Commerce", "Internal Tools", "AI Systems"];
-
 export default function WorkPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [expandedProject, setExpandedProject] = useState<string | null>(null);
-
-  const filteredProjects = activeCategory === "All"
-    ? projects
-    : projects.filter(p => p.category === activeCategory);
-
-  const toggleExpand = (id: string) => {
-    setExpandedProject(expandedProject === id ? null : id);
-  };
-
   return (
-    <div className="min-h-screen bg-navy-900 selection:bg-teal-400/30">
-      {/* Navbar Placeholder (Consistent with Home) */}
-      <header className="absolute top-0 w-full z-50 px-6 py-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0">
-        <Link href="/" className="text-xl font-bold text-white tracking-tight">
-          3rive Systems
-        </Link>
-        <nav className="flex gap-6">
-          <Link href="/" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Home</Link>
-          <Link href="/work" className="text-teal-400 text-sm font-medium border-b border-teal-400">Work</Link>
-          <Link href="/process" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Process</Link>
-          <Link href="/ventures" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Ventures</Link>
-          <Link href="/contact" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Contact</Link>
-        </nav>
-      </header>
+    <main className="min-h-screen bg-background text-foreground">
+      <Navbar />
 
-      {/* Hero */}
-      <section className="pt-40 pb-20 px-6 border-b border-white/5 bg-gradient-to-b from-navy-900 to-slate-900/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 mb-6">
-            <Activity className="w-4 h-4 text-teal-400" />
-            <span className="text-sm font-mono text-slate-300 tracking-wide">PORTFOLIO ONLINE</span>
+      <div className="pt-32 pb-24 max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-16 text-center"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
+            Industrial Strength Engineering
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-            Engineering Showcase
+          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+            Shipped Code.
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl leading-relaxed">
-            A selection of mission-critical systems and scalable applications we've engineered.
-            We solve the hard problems so you don't have to.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            We don't just design pretty screens. We build complex, data-heavy applications that handle real money and real users.
           </p>
-        </div>
-      </section>
+        </motion.div>
 
-      {/* Main Content */}
-      <section className="py-20 px-6 max-w-7xl mx-auto min-h-screen">
-
-        {/* Filter */}
-        <div className="flex flex-wrap gap-2 mb-16">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${activeCategory === cat
-                ? "bg-teal-400 text-navy-900"
-                : "bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-800"
-                }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Project List */}
-        <div className="space-y-6">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className={`group rounded-2xl border border-slate-800 bg-slate-900/50 overflow-hidden transition-all duration-300 ${expandedProject === project.id ? "ring-1 ring-teal-400/50" : "hover:border-slate-700"
-                }`}
-            >
-              <div
-                className="p-8 cursor-pointer flex flex-col md:flex-row md:items-start justify-between gap-6"
-                onClick={() => toggleExpand(project.id)}
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-3">
-                    <h3 className="text-2xl font-bold text-white">{project.title}</h3>
-                    <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-teal-400/10 text-teal-400 border border-teal-400/20 text-xs font-mono uppercase tracking-wider">
-                      {project.challenge}
-                    </div>
-                  </div>
-                  <p className="text-slate-400 text-lg mb-6 max-w-3xl">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-3">
-                    {project.tech.map((t) => (
-                      <span key={t} className="px-3 py-1 rounded bg-slate-800 text-slate-400 text-xs font-mono border border-slate-700 font-medium">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-end gap-6 text-right min-w-[200px]">
-                  <div className="text-green-500 text-sm font-mono font-bold flex items-center gap-2">
-                    <Terminal className="w-4 h-4" />
-                    IMPACT
-                  </div>
-                  <div className="text-slate-300 font-medium">
-                    {project.impact}
-                  </div>
-                  <div className={`mt-auto transition-transform duration-300 ${expandedProject === project.id ? 'rotate-180' : ''}`}>
-                    <ChevronDown className="w-6 h-6 text-slate-500 group-hover:text-teal-400" />
-                  </div>
-                </div>
+        <div className="space-y-32">
+          {projectCategories.map((category, catIndex) => (
+            <div key={category.name}>
+              <div className="mb-12 border-b border-border pb-6">
+                <h2 className="text-3xl font-bold font-heading mb-2">{category.name}</h2>
+                <p className="text-muted-foreground italic">{category.description}</p>
               </div>
 
-              {/* Expanded Content */}
-              <div
-                className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${expandedProject === project.id ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-              >
-                <div className="overflow-hidden">
-                  <div className="p-8 border-t border-slate-800 bg-navy-900/50 grid md:grid-cols-2 gap-12">
-                    <div>
-                      <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <div className="w-1 h-6 bg-red-500 rounded-full" /> The Problem
-                      </h4>
-                      <p className="text-slate-400 leading-relaxed mb-8">
-                        {project.details.problem}
-                      </p>
+              <div className="space-y-24">
+                {category.projects.map((project, index) => (
+                  <section key={project.title} className="grid lg:grid-cols-2 gap-12 items-start">
+                    <div className={`order-2 ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
 
-                      <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <div className="w-1 h-6 bg-teal-400 rounded-full" /> The Architecture
-                      </h4>
-                      <p className="text-slate-400 leading-relaxed">
-                        {project.details.architecture}
-                      </p>
+                      <div className="flex gap-2 mb-2">
+                        {project.tags.map(tag => (
+                          <span key={tag} className="text-xs font-bold uppercase tracking-wider text-muted-foreground bg-muted px-2 py-1 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="text-3xl font-bold font-heading">{project.title}</h3>
+
+                      <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
+                        <p><strong className="text-foreground">The Challenge:</strong> {project.challenge}</p>
+                        <p><strong className="text-foreground">The Solution:</strong> {project.solution}</p>
+                      </div>
+
+                      <div className="bg-card border border-border rounded-xl p-6">
+                        <h4 className="font-bold text-sm uppercase tracking-widest mb-4 text-primary">Key Technologies</h4>
+                        <ul className="space-y-2">
+                          {project.tech.map((item) => (
+                            <li key={item} className="flex items-center gap-3 text-muted-foreground">
+                              <CheckCircle className="w-5 h-5 text-electric-teal shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
 
-                    {project.details.codeSnippet && (
-                      <div className="relative group/code">
-                        <div className="absolute -top-3 right-4 px-2 py-1 bg-slate-800 text-xs text-slate-400 font-mono rounded border border-slate-700">
-                          core_logic.py
-                        </div>
-                        <pre className="p-6 rounded-xl bg-black/50 border border-slate-800 font-mono text-sm text-slate-300 overflow-x-auto">
-                          <code>{project.details.codeSnippet}</code>
-                        </pre>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                    <div className={`order-1 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+                      <BrowserWindow url={project.url} imageColor={project.imageColor} imageSrc={project.imageSrc} />
+                    </div>
+                  </section>
+                ))}
               </div>
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
       <Footer />
-    </div>
+    </main>
   );
 }

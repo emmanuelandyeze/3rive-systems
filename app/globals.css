@@ -1,39 +1,138 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Palette */
-  --navy-900: #0F172A;
-  --teal-400: #00E5FF;
-  --green-500: #00C853;
-  --slate-700: #334155;
-  --slate-800: #1E293B;
-  
-  --background: var(--navy-900);
-  --foreground: #ffffff;
+  /* Brand Palette - Static */
+  --deep-forest: #0a493a;
+  --electric-teal: #00E5FF;
+  --copper-clay: #C27856;
+
+  /* Light Mode Defaults */
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+
+  --primary: #0a493a;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f5f5f5;
+  /* neutral-100 */
+  --secondary-foreground: #171717;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #525252;
+  /* neutral-600 */
+
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+
+  --border: #e5e5e5;
+  /* neutral-200 */
+  --input: #e5e5e5;
+  --ring: #0a493a;
+
+  --radius: 0.5rem;
+
+  /* Legacy Mappings -> Mapped to Neutrals now */
+  --deep-slate: #0a0a0a;
+  --lighter-slate: #f5f5f5;
+  --slate-border: #e5e5e5;
+  --off-white: #0a0a0a;
 }
 
-@theme inline {
+.dark {
+  /* Dark Mode - Deep Forest Theme */
+  --background: #010503;
+  /* Very dark green, almost black */
+  --foreground: #e2e8f0;
+
+  --card: #04100b;
+  /* Deep rich green */
+  --card-foreground: #e2e8f0;
+
+  --popover: #04100b;
+  --popover-foreground: #e2e8f0;
+
+  --primary: #10b981;
+  /* Emerald 500 - brighter green for dark mode */
+  --primary-foreground: #010503;
+
+  --secondary: #0a2e26;
+  /* Deep forest green */
+  --secondary-foreground: #e2e8f0;
+
+  --muted: #0a2e26;
+  --muted-foreground: #94a3b8;
+
+  --accent: #064e3b;
+  /* Emerald 900 */
+  --accent-foreground: #e2e8f0;
+
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fafafa;
+
+  --border: #134e40;
+  --input: #134e40;
+  --ring: #10b981;
+
+  /* Legacy Mappings */
+  --deep-slate: #010503;
+  --lighter-slate: #04100b;
+  --slate-border: #134e40;
+  --off-white: #e2e8f0;
+}
+
+
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
-  --color-navy-900: var(--navy-900);
-  --color-teal-400: var(--teal-400);
-  --color-green-500: var(--green-500);
-  --color-slate-700: var(--slate-700);
-  --color-slate-800: var(--slate-800);
 
-  /* Inter for body text, Geist for Headers as per latest request, or simply mapped */
-  --font-sans: var(--font-inter); 
-  --font-heading: var(--font-geist-sans);
-  --font-mono: var(--font-jetbrains-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Custom Brand Colors */
+  --color-deep-forest: var(--deep-forest);
+  --color-electric-teal: var(--electric-teal);
+  --color-copper-clay: var(--copper-clay);
+
+  /* Legacy/Semantic Mappings */
+  --color-deep-slate: var(--deep-slate);
+  --color-lighter-slate: var(--lighter-slate);
+  --color-slate-border: var(--slate-border);
+  --color-off-white: var(--off-white);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
 }
